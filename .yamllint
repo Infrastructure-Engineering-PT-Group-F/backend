@@ -1,0 +1,19 @@
+---
+extends: default
+
+ignore:
+  - .pre-commit-config.yaml
+  - .spectral.yml
+  - charts/
+
+rules:
+  line-length: false
+  comments:
+    min-spaces-from-content: 1
+    ignore:
+      - docs/openapi.yaml
+  braces:
+    max-spaces-inside: 1
+  truthy:
+    ignore:
+      - .github/

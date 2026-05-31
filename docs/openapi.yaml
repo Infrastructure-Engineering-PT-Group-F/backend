@@ -1,0 +1,417 @@
+---
+openapi: 3.1.0
+info:
+  title: Weather API
+  version: v1.1.2 #x-release-please-version
+  description: |
+    This is a simple weather API that allows users to create save favorite locations, and get weather forecasts for those locations.
+    Additionally, users can be created and listed.
+servers:
+  - url: http://localhost:8080
+    description: Local Server URL
+tags:
+  - name: favorite-location
+    description: Operations related to favorite locations.
+  - name: user
+    description: Operations related to users.
+  - name: forecast
+    description: Operations related to weather forecasts.
+paths:
+  /api/{userId}/favorite/:
+    get:
+      tags:
+        - favorite-location
+      operationId: list_favorite_locations
+      description: Returns the list of favorite locations for a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK - Returns the list of favorite locations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteLocationListDto"
+        "404":
+          description: Not Found - User not found
+    post:
+      tags:
+        - favorite-location
+      operationId: create_favorite_location
+      description: Creates a new favorite location for a user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FavoriteLocationCreateDto"
+        required: true
+      responses:
+        "201":
+          description: Created - Favorite location created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteLocation"
+        "400":
+          description: Bad Request - Invalid data
+        "404":
+          description: Not Found - User not found
+  /api/user/:
+    get:
+      tags:
+        - user
+      operationId: list_users
+      description: Returns the list of users.
+      responses:
+        "200":
+          description: OK - Returns the list of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserListDto"
+        "404":
+          description: Not Found - No users found
+    post:
+      tags:
+        - user
+      operationId: create_user
+      description: Creates a new user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateDto"
+        required: true
+      responses:
+        "201":
+          description: Created - User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request - Invalid data
+        "409":
+          description: Conflict - Username already exists
+  /api/user/{id}:
+    delete:
+      tags:
+        - user
+      operationId: delete_user
+      description: Deletes a user.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content - User successfully deleted
+        "404":
+          description: Not Found - User not found
+  /api/{userId}/{locationId}/forecast/:
+    get:
+      tags:
+        - forecast
+      operationId: get_forecast
+      description: Returns the forecast for a location.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+          schema:
+            type: string
+        - name: locationId
+          in: path
+          required: true
+          example: 9897802d-adfa-4c8b-b20a-661302513a6f
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK - Returns the forecast
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forecast"
+        "404":
+          description: Not Found - Location or forecast not found
+        "400":
+          description: Bad Request - Invalid request
+  /api/{userId}/favorite/{id}:
+    get:
+      tags:
+        - favorite-location
+      operationId: get_favorite_location
+      description: Returns a favorite location.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          example: 9897802d-adfa-4c8b-b20a-661302513a6f
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK - Returns the favorite location
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FavoriteLocation"
+        "404":
+          description: Not Found - Location not found
+    delete:
+      tags:
+        - favorite-location
+      operationId: delete_favorite_location
+      description: Deletes a favorite location.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          example: 9897802d-adfa-4c8b-b20a-661302513a6f
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content - Location successfully deleted
+        "404":
+          description: Not Found - Location not found
+components:
+  schemas:
+    FavoriteLocationCreateDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Vienna
+        location:
+          type: string
+          example: Linz, Austria
+    Coordinates:
+      type: object
+      properties:
+        longitude:
+          type: number
+          format: double
+          example: 14.291
+        latitude:
+          type: number
+          format: double
+          example: 48.306
+        elevation:
+          type: number
+          format: float
+          example: 171.0
+    FavoriteLocation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9897802d-adfa-4c8b-b20a-661302513a6f
+        givenName:
+          type: string
+          example: Vienna
+        givenLocation:
+          type: string
+          example: Linz, Austria
+        coordinates:
+          $ref: "#/components/schemas/Coordinates"
+        nearestAirport:
+          type: string
+          example: LOWL
+    UserCreateDto:
+      type: object
+      properties:
+        username:
+          type: string
+          example: john_doe
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6b49455d-8b7b-4a8c-8c75-125ceb9d2f83
+        username:
+          type: string
+          example: john_doe
+    CurrentWeather:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: float
+          example: 20.0
+        feelsLike:
+          type: number
+          format: float
+          example: 20.0
+        humidity:
+          type: integer
+          format: int32
+          example: 50
+        dewPoint:
+          type: number
+          format: float
+          example: 10.0
+        precipitation:
+          type: number
+          format: float
+          example: 0.0
+        windSpeed:
+          type: number
+          format: float
+          example: 5.0
+        windDirection:
+          type: integer
+          format: int32
+          example: 180
+        windGusts:
+          type: number
+          format: float
+          example: 10.0
+    Forecast:
+      type: object
+      properties:
+        coordinates:
+          $ref: "#/components/schemas/Coordinates"
+        requestTime:
+          type: string
+          format: date-time
+          example: 2021-10-10T10:00:00Z
+        units:
+          $ref: "#/components/schemas/Units"
+        currentWeather:
+          $ref: "#/components/schemas/CurrentWeather"
+        hourlyForecast:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/HourlyForecast"
+    HourlyForecast:
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+          example: 2021-10-10T10:00:00Z
+        temperature:
+          type: number
+          format: float
+          example: 20.0
+        feelsLike:
+          type: number
+          format: float
+          example: 20.0
+        humidity:
+          type: integer
+          format: int32
+          example: 50
+        dewPoint:
+          type: number
+          format: float
+          example: 10.0
+        precipitationProbability:
+          type: integer
+          format: int32
+          example: 0
+        precipitation:
+          type: number
+          format: float
+          example: 0.0
+        cloudCover:
+          type: integer
+          format: int32
+          example: 0
+        visibility:
+          type: integer
+          format: int32
+          example: 10
+        windSpeed:
+          type: number
+          format: float
+          example: 5.0
+        windDirection:
+          type: integer
+          format: int32
+          example: 180
+        windGusts:
+          type: number
+          format: float
+          example: 10.0
+    Units:
+      type: object
+      properties:
+        temperature:
+          type: string
+          example: °C
+        feelsLike:
+          type: string
+          example: °C
+        humidity:
+          type: string
+          example: "%"
+        dewPoint:
+          type: string
+          example: °C
+        precipitationProbability:
+          type: string
+          example: "%"
+        precipitation:
+          type: string
+          example: "mm"
+        cloudCover:
+          type: string
+          example: "%"
+        visibility:
+          type: string
+          example: "m"
+        windSpeed:
+          type: string
+          example: "km/h"
+        windDirection:
+          type: string
+          example: "°"
+        windGusts:
+          type: string
+          example: "km/h"
+    FavoriteLocationListDto:
+      type: object
+      properties:
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/FavoriteLocation"
+    UserListDto:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"

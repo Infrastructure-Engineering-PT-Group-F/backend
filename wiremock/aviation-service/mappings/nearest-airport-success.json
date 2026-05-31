@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/22.0,11.0"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "station": {
+          "icao": "LOWL",
+          "longitude": 14.193611,
+          "latitude": 48.233056,
+          "elevation_m": 978
+        }
+      }
+    ]
+  }
+}

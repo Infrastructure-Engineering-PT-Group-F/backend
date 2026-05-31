@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/2.0/8.0/1"
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

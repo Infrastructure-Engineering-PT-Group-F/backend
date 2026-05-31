@@ -1,0 +1,158 @@
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '4.0.6'
+  id 'io.spring.dependency-management' version '1.1.7'
+  id 'checkstyle'
+  id 'pmd'
+  id 'jacoco'
+  id 'info.solidsoft.pitest' version '1.19.0'
+  id 'org.cyclonedx.bom' version '3.2.4'
+}
+
+def versionMajor = 0
+def versionMinor = 0
+def versionPatch = 1
+
+group = 'io.muehlbachler'
+version = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+  }
+}
+
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+repositories {
+  mavenCentral()
+}
+ext {
+  set('springCloudVersion', "2025.1.1")
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-cache'
+  implementation 'org.springframework.boot:spring-boot-starter-flyway'
+  implementation 'org.flywaydb:flyway-core'
+  implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+  implementation 'org.springframework.boot:spring-boot-configuration-processor'
+  implementation 'com.google.code.gson:gson:2.14.0'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3'
+
+  compileOnly 'org.projectlombok:lombok'
+
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+  runtimeOnly 'com.h2database:h2'
+  runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+  annotationProcessor 'org.projectlombok:lombok'
+
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+  testImplementation 'org.springframework.boot:spring-boot-resttestclient'
+  testImplementation 'org.springframework.boot:spring-boot-restclient'
+  testImplementation 'org.wiremock.integrations:wiremock-spring-boot:4.2.1'
+
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+  }
+}
+
+tasks.named('test') {
+  finalizedBy jacocoTestReport
+
+  useJUnitPlatform()
+
+  testLogging {
+	  events "PASSED", "SKIPPED", "FAILED"
+    exceptionFormat = "full"
+	}
+}
+
+checkstyle {
+  configFile = file("config/checkstyle/checkstyle.xml")
+  toolVersion = "13.4.2"
+}
+
+pmd {
+  consoleOutput = true
+  ruleSetFiles = files("config/pmd/ruleset.xml")
+  toolVersion = "7.24.0"
+}
+
+jacocoTestReport {
+  dependsOn test
+
+  reports {
+    xml.required = false
+    csv.required = false
+    html.outputLocation = layout.buildDirectory.dir('jacoco/html')
+  }
+}
+
+jacocoTestCoverageVerification {
+  violationRules {
+    rule {
+      enabled = true
+
+      limit {
+        minimum = 0.8
+      }
+    }
+
+    rule {
+      enabled = true
+      element = 'CLASS'
+      excludes = ['io.muehlbachler.bswe.App']
+
+      limit {
+        counter = 'LINE'
+        value = 'COVEREDRATIO'
+        minimum = 0.8
+      }
+    }
+
+    rule {
+      enabled = true
+      element = 'CLASS'
+      excludes = ['io.muehlbachler.bswe.App']
+
+      limit {
+        counter = 'BRANCH'
+        value = 'COVEREDRATIO'
+        minimum = 0.70
+      }
+    }
+  }
+}
+
+pitest {
+  pitestVersion = '1.19.6'
+  junit5PluginVersion = '1.2.3'
+
+  mutators = ['ALL']
+  excludedClasses = ['io.muehlbachler.bswe.App']
+  mutationThreshold = 90
+  coverageThreshold = 90
+}
+
+cyclonedxBom {
+    projectType = "application"
+    schemaVersion = "VERSION_16"
+    jsonOutput = file("build/reports/sbom.json")
+    xmlOutput = file("build/reports/sbom.xml")
+    includeBuildSystem = true
+}

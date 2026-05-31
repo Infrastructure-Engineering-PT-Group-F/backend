@@ -1,0 +1,39 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-xml
+      - id: detect-aws-credentials
+        args: ["--allow-missing-credentials"]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+  #      - id: no-commit-to-branch
+  #        args: [
+  #            "--branch",
+  #            "main",
+  #            "--branch",
+  #            "next"
+  #        ]
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args: [--strict, -c=.yamllint]
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.30
+    hooks:
+      - id: helmlint
+  - repo: https://github.com/hadolint/hadolint.git
+    rev: v2.13.1-beta
+    hooks:
+      - id: hadolint

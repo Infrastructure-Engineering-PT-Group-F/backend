@@ -1,0 +1,15 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        ":automergePatch",
+        ":automergeMinor"
+    ],
+    "enabledManagers": [
+        "github-actions",
+        "pre-commit",
+        "gradle",
+        "gradle-wrapper",
+        "dockerfile"
+    ]
+}
