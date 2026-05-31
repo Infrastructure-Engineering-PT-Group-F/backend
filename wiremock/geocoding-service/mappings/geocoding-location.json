@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/location"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "results": [
+        {
+          "longitude": 1.0,
+          "latitude": 2.0,
+          "elevation": 3.0
+        }
+      ]
+    }
+  }
+}

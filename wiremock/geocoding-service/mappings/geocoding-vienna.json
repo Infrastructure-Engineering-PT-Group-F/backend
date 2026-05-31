@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/Vienna,%20Austria"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "results": [
+        {
+          "longitude": 11.0,
+          "latitude": 22.0,
+          "elevation": 33.0
+        }
+      ]
+    }
+  }
+}

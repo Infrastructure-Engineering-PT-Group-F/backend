@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/2.0/9.0/1"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "invalid": "format"
+    }
+  }
+}
