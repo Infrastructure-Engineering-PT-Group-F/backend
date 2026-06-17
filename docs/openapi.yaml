@@ -16,6 +16,8 @@ tags:
     description: Operations related to users.
   - name: forecast
     description: Operations related to weather forecasts.
+  - name: metar
+    description: Operations related to METAR observations.
 paths:
   /api/{userId}/favorite/:
     get:
@@ -153,6 +155,31 @@ paths:
           description: Not Found - Location or forecast not found
         "400":
           description: Bad Request - Invalid request
+  /api/metar/{icao}:
+    get:
+      tags:
+        - metar
+      operationId: get_metar
+      description: >
+        Returns the raw METAR observation for a station, proxied from
+        the upstream aviation weather API.
+      parameters:
+        - name: icao
+          in: path
+          required: true
+          example: LOWW
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK - Returns the METAR observation
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "404":
+          description: Not Found - METAR not available for the station
   /api/{userId}/favorite/{id}:
     get:
       tags:
