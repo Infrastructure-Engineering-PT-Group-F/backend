@@ -46,6 +46,8 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: {{ .Values.spring.profile | quote }}
             {{- if not .Values.apiKeys.useExistingSecret }}
             - name: AVWX_API_KEY
               valueFrom:
@@ -58,6 +60,41 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.apiKeys.existingSecretName }}
                   key: {{ .Values.apiKeys.existingSecretKey }}
+            {{- end }}
+            {{- if eq .Values.spring.profile "external-pg" }}
+            {{- if not .Values.database.useExistingSecret }}
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "weather-app-backend.fullname" . }}-db
+                  key: url
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "weather-app-backend.fullname" . }}-db
+                  key: username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "weather-app-backend.fullname" . }}-db
+                  key: password
+            {{- else }}
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecretName }}
+                  key: {{ .Values.database.urlKey }}
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecretName }}
+                  key: {{ .Values.database.usernameKey }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecretName }}
+                  key: {{ .Values.database.passwordKey }}
+            {{- end }}
             {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
