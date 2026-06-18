@@ -149,9 +149,7 @@ The GitHub Actions workflows ensure that all code quality checks pass and that t
 
 ## Kubernetes Deployment
 
-The backend service is provided as a container image at `ghcr.io/infrastructure-engineering-pt-group-f/backend`
-
-On each release the chart is packaged and pushed as an OCI artifact to GHCR, version-aligned with the application release:
+On each release the chart is packaged and pushed as an OCI artifact to GHCR `ghcr.io/infrastructure-engineering-pt-group-f/charts`, version-aligned with the application release:
 
 ```
 oci://ghcr.io/infrastructure-engineering-pt-group-f/charts/weather-app-backend
@@ -179,7 +177,7 @@ helm install weather-app-backend \
 helm install weather-app-backend ./charts/weather-app-backend -f weather-app-backend-values.yaml
 ```
 
-The backend image will be published publicly, so no image pull secret is required; the chart's `imagePullSecrets` value remains available for private forks.
+The backend image is published publicly, so no image pull secret is required; the chart's `imagePullSecrets` value remains available for private forks.
 
 In [deploy/minikube.sh](./deploy/minikube.sh), you can find an example script to deploy (and access) the service to Minikube.
 
