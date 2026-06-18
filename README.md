@@ -135,7 +135,7 @@ git config core.hooksPath .githooks
 The GitHub Actions workflows ensure that all code quality checks pass and that the code is deployable:
 
 - **verify.yml** — runs test, lint, SBOM, and build jobs on every push and pull request, including a multi-platform container image build (without publishing). Commit messages are checked by the commitlint workflow; CodeQL, dependency review, and the OpenSSF Scorecard provide code and supply-chain security scanning.
-- **release.yml** — triggered on every push to `main`; runs [release-please](https://github.com/googleapis/release-please) to manage the changelog and create GitHub releases. When a release is created it publishes the container image to `ghcr.io/infrastructure-engineering-pt-group-f/backend`.
+- **release.yml** — triggered on every push to `main`; runs [release-please](https://github.com/googleapis/release-please) to manage the changelog and create GitHub releases. When a release is created it publishes the container image to `ghcr.io/infrastructure-engineering-pt-group-f/backend` and the Helm chart as an OCI artifact to `oci://ghcr.io/infrastructure-engineering-pt-group-f/charts`.
 
 ### Container image tags
 
@@ -151,6 +151,12 @@ The GitHub Actions workflows ensure that all code quality checks pass and that t
 
 The backend service is provided as a container image at `ghcr.io/infrastructure-engineering-pt-group-f/backend`
 
+On each release the chart is packaged and pushed as an OCI artifact to GHCR, version-aligned with the application release:
+
+```
+oci://ghcr.io/infrastructure-engineering-pt-group-f/charts/weather-app-backend
+```
+
 The following example shows an example deployment using the provided [Helm chart](./charts/weather-app-backend/).
 
 ```shell
@@ -164,7 +170,12 @@ apiKeys:
   avwx: "Token ${AVWX_API_KEY}"
 EOF
 
-# install weather-app-backend with helm
+# install weather-app-backend from the OCI registry
+helm install weather-app-backend \
+  oci://ghcr.io/infrastructure-engineering-pt-group-f/charts/weather-app-backend \
+  --version <release-version> -f weather-app-backend-values.yaml
+
+# or from a local checkout
 helm install weather-app-backend ./charts/weather-app-backend -f weather-app-backend-values.yaml
 ```
 
