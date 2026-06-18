@@ -51,6 +51,19 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+spring:
+  profile: external-pg
+
+database:
+  useExistingSecret: false
+  existingSecretName: "weather-app-backend-db"
+  urlKey: "url"
+  usernameKey: "username"
+  passwordKey: "password"
+  url: "jdbc:postgresql://localhost:5432/weather"
+  username: "weather"
+  password: "weather"
+
 apiKeys:
   useExistingSecret: false
   existingSecretName: "api-keys"
