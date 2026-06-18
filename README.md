@@ -27,6 +27,24 @@ To run the service successfully, you need to provide the following environment v
 
 - `AVWX_API_KEY`: The API key for the [Aviation Weather Rest API](https://avwx.rest/) in the format `Token avwx-api-key`. The value will be used in the `Authorization` header when calling the API.
 
+### Persistence profiles
+
+The active datasource is selected through the `SPRING_PROFILES_ACTIVE` environment variable. There is no datasource configured in the default profile:
+
+| Profile | Datasource | Use case |
+|---------|------------|----------|
+| `local`       | In-memory H2 | Local development without an external database |
+| `test`        | In-memory H2 | Test suite (activated automatically by Gradle) |
+| `external-pg` | External PostgreSQL | Deployment and local PostgreSQL testing |
+
+The `external-pg` profile reads its connection parameters from the environment, so no credentials are baked into the image:
+
+- `SPRING_DATASOURCE_URL` (e.g. `jdbc:postgresql://host:5432/weather`)
+- `SPRING_DATASOURCE_USERNAME`
+- `SPRING_DATASOURCE_PASSWORD`
+
+Hibernate runs with `ddl-auto=validate` in every profile, therefore the schema is owned exclusively by the Flyway migrations in [src/main/resources/db/migration](./src/main/resources/db/migration), which are written to apply unchanged on both H2 and PostgreSQL.
+
 ---
 
 ## Development
@@ -96,10 +114,33 @@ grype sbom:build/reports/sbom.json
 
 ### Running
 
-To run the service, run the following command:
+To run the service against in-memory H2, run the following command:
 
 ```shell
-./gradlew bootRun
+SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+```
+
+#### Running against a local PostgreSQL
+
+A [compose.yaml](./compose.yaml) provides a throwaway PostgreSQL for local testing. Start the database and run the app against it with the `external-pg` profile:
+
+```shell
+# database only — run the app from the IDE/Gradle
+docker compose up postgres
+
+SPRING_PROFILES_ACTIVE=external-pg \
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/weather \
+SPRING_DATASOURCE_USERNAME=weather \
+SPRING_DATASOURCE_PASSWORD=weather \
+AVWX_API_KEY="Token <your-key>" \
+  ./gradlew bootRun
+```
+
+To run the whole stack (database + application) in containers `./gradlew bootJar` is required first, so the image can pick up the built jar:
+
+```shell
+./gradlew bootJar
+docker compose --profile app up --build
 ```
 
 ### Building

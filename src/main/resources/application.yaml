@@ -17,13 +17,7 @@ api:
       value: ${AVWX_API_KEY}
 
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: password
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: validate
 
 management:
@@ -69,3 +63,42 @@ springdoc:
     path: /api/openapi/docs
   swagger-ui:
     path: /api/openapi/ui
+
+# Local development against in-memory H2 (no external database required).
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+# Test suite: in-memory H2.
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+# External PostgreSQL. Connection parameters are injected via environment
+---
+spring:
+  config:
+    activate:
+      on-profile: external-pg
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}

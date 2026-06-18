@@ -1,0 +1,36 @@
+---
+# Local development stack.
+#
+#   docker compose up postgres            # database only, run the app from the IDE/Gradle
+#   docker compose --profile app up --build   # full stack (requires ./gradlew bootJar first)
+#
+name: weather-app-backend
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-weather}
+      POSTGRES_USER: ${POSTGRES_USER:-weather}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-weather}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backend:
+    profiles: ["app"]
+    build:
+      context: .
+    image: weather-app-backend:local
+    environment:
+      SPRING_PROFILES_ACTIVE: external-pg
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-weather}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-weather}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-weather}
+      AVWX_API_KEY: ${AVWX_API_KEY:-}
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres-data:
