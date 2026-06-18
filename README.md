@@ -149,7 +149,7 @@ The GitHub Actions workflows ensure that all code quality checks pass and that t
 
 ## Kubernetes Deployment
 
-The backend service will be provided as an OCI image and a container image at `ghcr.io/infrastructure-engineering-pt-group-f/backend`
+The backend service is provided as a container image at `ghcr.io/infrastructure-engineering-pt-group-f/backend`
 
 The following example shows an example deployment using the provided [Helm chart](./charts/weather-app-backend/).
 
