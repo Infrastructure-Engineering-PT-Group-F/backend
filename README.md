@@ -132,15 +132,24 @@ git config core.hooksPath .githooks
 
 ## GitHub Actions
 
-The GitHub Actions workflows ensure that all code quality checks pass and that the code is deployable: the verify workflow runs the test, lint, SBOM, and build jobs, including a multi-platform container image build (without publishing). Commit messages are checked by the commitlint workflow; CodeQL, dependency review, and the OpenSSF Scorecard provide code and supply-chain scanning.
+The GitHub Actions workflows ensure that all code quality checks pass and that the code is deployable:
 
-Publishing the container image to the GitHub Container Registry is not set up yet and is tracked as a separate issue.
+- **verify.yml** — runs test, lint, SBOM, and build jobs on every push and pull request, including a multi-platform container image build (without publishing). Commit messages are checked by the commitlint workflow; CodeQL, dependency review, and the OpenSSF Scorecard provide code and supply-chain security scanning.
+- **release.yml** — triggered on every push to `main`; runs [release-please](https://github.com/googleapis/release-please) to manage the changelog and create GitHub releases. When a release is created it publishes the container image to `ghcr.io/infrastructure-engineering-pt-group-f/backend`.
+
+### Container image tags
+
+| Tag | Description |
+|-----|-------------|
+| `v<semver>` (e.g. `v1.2.3`) | Exact release version managed by release-please |
+| `<short-sha>` (e.g. `a1b2c3d`) | Short commit SHA of the triggering commit |
+| `latest` | Always points to the most recent release on `main` |
 
 ---
 
 ## Kubernetes Deployment
 
-The backend service will be provided as an OCI image at `ghcr.io/infrastructure-engineering-pt-group-f/backend` once the image publishing pipeline is in place. Until then, the image must be built locally (see [Docker](#docker)).
+The backend service will be provided as an OCI image and a container image at `ghcr.io/infrastructure-engineering-pt-group-f/backend`
 
 The following example shows an example deployment using the provided [Helm chart](./charts/weather-app-backend/).
 
@@ -169,4 +178,4 @@ In [deploy/minikube.sh](./deploy/minikube.sh), you can find an example script to
 
 - This project is adapted from the public [reference implementation](https://github.com/muhlba91/hochschule-burgenland-bswe-ws2024-2at-backend); unit test generation in the reference was supported by GitHub Copilot (Anthropic Claude 3.5 Sonnet).
 - The Java package structure (`io.muehlbachler.bswe`) is kept from the reference implementation; the original license and attribution are preserved in [LICENSE.md](./LICENSE.md).
-- The conform commit linter and the release-please automation from the reference were removed; commitlint covers commit-message linting, and releases/image publishing will be introduced in dedicated issues.
+- The conform commit linter from the reference was removed; commitlint covers commit-message linting. Release automation and image publishing are handled by the release-please workflow.

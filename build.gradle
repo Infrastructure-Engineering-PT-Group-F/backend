@@ -9,12 +9,8 @@ plugins {
   id 'org.cyclonedx.bom' version '3.2.4'
 }
 
-def versionMajor = 0
-def versionMinor = 0
-def versionPatch = 1
-
 group = 'io.muehlbachler'
-version = "${versionMajor}.${versionMinor}.${versionPatch}"
+version = "1.0.0"
 
 java {
   toolchain {
