@@ -2,11 +2,16 @@
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "packages": {
     ".": {
-      "release-type": "gradle",
+      "release-type": "simple",
       "package-name": "infrastructure-engineering-pt-group-f-backend",
       "include-component-in-tag": false,
       "changelog-path": "CHANGELOG.md",
-      "extra-files": []
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "build.gradle"
+        }
+      ]
     }
   },
   "include-v-in-tag": true,
