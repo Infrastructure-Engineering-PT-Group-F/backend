@@ -124,7 +124,7 @@ docker run -p 8080:8080 infrastructure-engineering-pt-group-f-backend
 
 Commit messages must adhere to the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification and reference a GitHub issue, e.g. `feat: #42 add feature`. See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full rules.
 
-The rules are enforced in CI by [commitlint](https://commitlint.js.org/) (`.commitlintrc.yml`). To get the same checks locally before pushing, enable the tracked commit-msg hook once per clone:
+The rules are enforced in CI by [commitlint](https://commitlint.js.org/) (`commitlint.config.js`). To get the same checks locally before pushing, enable the tracked commit-msg hook once per clone:
 
 ```shell
 git config core.hooksPath .githooks
