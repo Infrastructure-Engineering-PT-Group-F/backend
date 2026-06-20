@@ -40,6 +40,9 @@ helm.sh/chart: {{ include "weather-app-backend.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- with .Values.tenant.label }}
+platform.fh-burgenland.at/tenant: {{ . | quote }}
+{{- end }}
 {{- end }}
 
 {{/*
