@@ -62,23 +62,6 @@ spec:
                   key: {{ .Values.apiKeys.existingSecretKey }}
             {{- end }}
             {{- if eq .Values.spring.profile "external-pg" }}
-            {{- if not .Values.database.useExistingSecret }}
-            - name: SPRING_DATASOURCE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "weather-app-backend.fullname" . }}-db
-                  key: url
-            - name: SPRING_DATASOURCE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "weather-app-backend.fullname" . }}-db
-                  key: username
-            - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "weather-app-backend.fullname" . }}-db
-                  key: password
-            {{- else }}
             - name: SPRING_DATASOURCE_URL
               valueFrom:
                 secretKeyRef:
@@ -94,7 +77,6 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.existingSecretName }}
                   key: {{ .Values.database.passwordKey }}
-            {{- end }}
             {{- end }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
