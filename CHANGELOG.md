@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.1.0...v1.2.0) (2026-06-20)
+
+
+### Features
+
+* [#8](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/8) adapt helm charts ([1efbfeb](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/1efbfeb20bc1e230d7ecc1b79517bf90d658e497))
+* [#8](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/8) switch persistence to PostgreSQL via env-selected profile ([64c78d6](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/64c78d659da523b20e425e69c239177c3ca9d7f7))
+
 ## [1.1.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.0.0...v1.1.0) (2026-06-18)
 
 
