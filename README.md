@@ -196,17 +196,19 @@ On each release the chart is packaged and pushed as an OCI artifact to GHCR `ghc
 oci://ghcr.io/infrastructure-engineering-pt-group-f/charts/weather-app-backend
 ```
 
-The following example shows an example deployment using the provided [Helm chart](./charts/weather-app-backend/).
+The following example shows a deployment using the provided [Helm chart](./charts/weather-app-backend/).
+Platform deployments should provide the AVWX API key through an existing
+Kubernetes Secret, typically reconciled by External Secrets Operator, and pass
+that Secret reference to the chart.
 
 ```shell
-# set the AVWX API key
-export AVWX_API_KEY="<your-avwx-api-key>"
-
 # create the helm values file
 cat <<EOF > weather-app-backend-values.yaml
 ---
 apiKeys:
-  avwx: "Token ${AVWX_API_KEY}"
+  useExistingSecret: true
+  existingSecretName: api-keys
+  existingSecretKey: avwx-api-key
 EOF
 
 # install weather-app-backend from the OCI registry

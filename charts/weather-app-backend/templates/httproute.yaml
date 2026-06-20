@@ -1,0 +1,28 @@
+{{- if .Values.gateway.httpRoute.enabled }}
+{{- $parentName := required "gateway.httpRoute.parentRef.name is required when gateway.httpRoute.enabled=true" .Values.gateway.httpRoute.parentRef.name }}
+{{- $parentNamespace := required "gateway.httpRoute.parentRef.namespace is required when gateway.httpRoute.enabled=true" .Values.gateway.httpRoute.parentRef.namespace }}
+{{- $parentSectionName := required "gateway.httpRoute.parentRef.sectionName is required when gateway.httpRoute.enabled=true" .Values.gateway.httpRoute.parentRef.sectionName }}
+{{- $hostname := required "gateway.httpRoute.hostname is required when gateway.httpRoute.enabled=true" .Values.gateway.httpRoute.hostname }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "weather-app-backend.fullname" . }}
+  labels:
+    {{- include "weather-app-backend.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ $parentName | quote }}
+      namespace: {{ $parentNamespace | quote }}
+      sectionName: {{ $parentSectionName | quote }}
+  hostnames:
+    - {{ $hostname | quote }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ include "weather-app-backend.fullname" . }}
+          port: {{ .Values.service.port }}
+{{- end }}
