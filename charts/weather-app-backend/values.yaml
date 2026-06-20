@@ -60,9 +60,6 @@ database:
   urlKey: "url"
   usernameKey: "username"
   passwordKey: "password"
-  url: "jdbc:postgresql://localhost:5432/weather"
-  username: "weather"
-  password: "weather"
 
 apiKeys:
   useExistingSecret: false

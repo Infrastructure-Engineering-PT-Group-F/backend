@@ -30,6 +30,9 @@ kubectl -n "${APP_NAMESPACE}" create secret docker-registry ghcr-credentials \
 # create Helm values file for the backend
 cat <<EOF > /tmp/weather-app-backend-values.yaml
 ---
+spring:
+  profile: local
+
 apiKeys:
   avwx: "Token ${AVWX_API_KEY}"
 
