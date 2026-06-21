@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.2.0...v1.3.0) (2026-06-21)
+
+
+### Features
+
+* [#10](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/10) make backend Helm chart platform-ready ([3dec575](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/3dec57567e5e0e21736a51ebece6a01d7f98907e))
+
+
+### Bug Fixes
+
+* [#10](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/10) address platform readiness review comments ([d9a1139](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/d9a1139405a2f7a0eb33f480a441909e5f242e58))
+
 ## [1.2.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.1.0...v1.2.0) (2026-06-20)
 
 
