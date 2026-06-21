@@ -48,6 +48,8 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.spring.profile | quote }}
+            - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED
+              value: "true"
             {{- if not .Values.apiKeys.useExistingSecret }}
             - name: AVWX_API_KEY
               valueFrom:

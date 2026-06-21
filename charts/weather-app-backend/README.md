@@ -100,6 +100,6 @@ The chart does not set a fixed `iam.gke.io/gcp-service-account` annotation.
 Add service account annotations only when the platform has confirmed a direct
 backend GCP API requirement.
 
-Database Secret configuration is unchanged from issue #8. The chart continues
+Database Secret configuration remains unchanged. The chart continues
 to read the datasource URL, username, and password from the configured existing
 database Secret keys.
