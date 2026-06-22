@@ -13,8 +13,12 @@ LABEL org.opencontainers.image.description="The backend of Group F's weather app
 LABEL org.opencontainers.image.revision="${CI_COMMIT_SHA}"
 LABEL org.opencontainers.image.version="${CI_COMMIT_TAG}"
 
+RUN addgroup -S app && adduser -S -G app -u 1000 app
+
 COPY build/libs/infrastructure-engineering-pt-group-f-backend-*.jar /app.jar
 
 EXPOSE 8080/tcp
+
+USER 1000:1000
 
 CMD ["java", "-jar", "/app.jar"]
