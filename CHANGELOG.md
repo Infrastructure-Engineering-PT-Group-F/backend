@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.3.1](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.3.0...v1.3.1) (2026-06-23)
+
+
+### Bug Fixes
+
+* [#11](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/11) add default resource requests and limits ([1da46de](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/1da46deb5b5776365c3303101e126021ad3ff5c9))
+* [#11](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/11) add startup probe delays for hardened backend ([98112ed](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/98112edbd8b8adf49b5eb994b78c207e3a2f1fdb))
+* [#11](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/11) harden backend container runtime ([818e8d9](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/818e8d9f54f74506698e693a7bdfe83cd513fd6c))
+* [#11](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/11) use startup probe for backend boot ([da99ca0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/da99ca062893eefd68966c695cbab2b80e880dbf))
+
 ## [1.3.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.2.0...v1.3.0) (2026-06-21)
 
 
