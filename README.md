@@ -230,7 +230,7 @@ spring:
   profile: external-pg
 
 database:
-  existingSecretName: tenant-backend-db
+  existingSecretName: weather-app-backend-db
   urlKey: url
   usernameKey: username
   passwordKey: password
