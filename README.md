@@ -220,6 +220,46 @@ helm install weather-app-backend \
 helm install weather-app-backend ./charts/weather-app-backend -f weather-app-backend-values.yaml
 ```
 
+### External PostgreSQL Secret Contract
+
+When `spring.profile` is set to `external-pg`, the backend requires an existing
+Kubernetes Secret in the same namespace as the backend Deployment.
+
+Use this tenant-scoped values contract:
+
+~~~yaml
+spring:
+  profile: external-pg
+
+database:
+  existingSecretName: tenant-backend-db
+  urlKey: url
+  usernameKey: username
+  passwordKey: password
+~~~
+
+The referenced Secret must provide all three required keys:
+
+- `url` maps to `SPRING_DATASOURCE_URL`
+- `username` maps to `SPRING_DATASOURCE_USERNAME`
+- `password` maps to `SPRING_DATASOURCE_PASSWORD`
+
+The chart references these values only through Kubernetes `secretKeyRef`
+entries. It does not create a database Secret and no database credential may be
+stored in Helm values, Git, logs, screenshots, or documentation.
+
+For the current chart behavior, the `external-pg` profile always expects an
+existing Secret through `database.existingSecretName` and the configured key
+names. Do not use `database.useExistingSecret` as an opt-out for this profile.
+
+The tenant database Secret must be delivered through the approved external
+secret-management process. The end-to-end runtime validation is tracked by
+[backend #28](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/28)
+and depends on database credential delivery in
+[gitops #42](https://github.com/Infrastructure-Engineering-PT-Group-F/gitops/issues/42)
+and tenant provisioning in
+[gitops #39](https://github.com/Infrastructure-Engineering-PT-Group-F/gitops/issues/39).
+
 The backend image is published publicly, so no image pull secret is required; the chart's `imagePullSecrets` value remains available for private forks.
 
 In [deploy/minikube.sh](./deploy/minikube.sh), you can find an example script to deploy (and access) the service to Minikube.
