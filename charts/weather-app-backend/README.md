@@ -57,25 +57,14 @@ gateway:
   httpRoute:
     enabled: true
     parentRef:
-      name: platform-gateway
-      namespace: envoy-gateway-system
+      name: shared-gateway
+      namespace: platform-gateway
       sectionName: https
-    hostname: tenant.example.com
+    hostname: tenant.gcp.ajdininfrastructure.lol
 ```
 
 The chart does not hard-code an Envoy Gateway name, namespace, listener name,
 or tenant hostname.
-
-## Legacy Ingress
-
-Legacy Kubernetes Ingress remains available but disabled by default:
-
-```yaml
-ingress:
-  enabled: false
-```
-
-Gateway API HTTPRoute configuration is separate from legacy Ingress values.
 
 ## ServiceMonitor
 
