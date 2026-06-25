@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.3.1...v1.4.0) (2026-06-25)
+
+
+### Features
+
+* [#35](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/35) replace chart Ingress with Gateway API HTTPRoute ([1c14583](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/1c14583d4675e57026d407bd48e61500582869ab))
+
+
+### Bug Fixes
+
+* [#31](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/31) set chart appVersion to v1.3.1 ([5ef371f](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/5ef371f5595b8ac96c298bdd21dedbac0adbf815))
+
 ## [1.3.1](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.3.0...v1.3.1) (2026-06-23)
 
 
