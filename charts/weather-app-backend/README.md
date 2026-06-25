@@ -9,6 +9,26 @@ while keeping local development opt-ins available.
 Set `image.tag` to the backend image tag that should run for the tenant. When
 `image.tag` is empty, the chart falls back to `Chart.appVersion`.
 
+## Versioning and releases
+
+`Chart.yaml` `version` and `appVersion` are managed automatically by
+release-please and should not be edited by hand. On each release, release-please
+rewrites both fields through the `extra-files` entry in
+`release-please-config.json`, driven by the `x-release-please-version`
+annotations in `Chart.yaml`:
+
+- `version` tracks the application release as bare SemVer (for example
+  `1.4.0`). The chart version intentionally follows the app version because the
+  release workflow already packages the published OCI chart with `--version` set
+  to the same release.
+- `appVersion` is the v-prefixed image tag (for example `v1.4.0`), so the
+  default `image.tag` fallback resolves to a tag that the release workflow
+  actually publishes.
+
+This keeps the in-repo chart, the published OCI chart, and the backend image on
+one release version with no manual edits, which is what previously drifted and
+caused the `ImagePullBackOff` in #31.
+
 ## Tenant label
 
 Set `tenant.label` to add the tenant marker to chart-managed resources:
