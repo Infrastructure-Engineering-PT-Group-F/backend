@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.4.0...v1.5.0) (2026-06-26)
+
+
+### Features
+
+* [#39](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/issues/39) move management api to own port ([01d989e](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/commit/01d989e9d56440a0d9faf6c99acf6701bd8e5186))
+
 ## [1.4.0](https://github.com/Infrastructure-Engineering-PT-Group-F/backend/compare/v1.3.1...v1.4.0) (2026-06-25)
 
 
