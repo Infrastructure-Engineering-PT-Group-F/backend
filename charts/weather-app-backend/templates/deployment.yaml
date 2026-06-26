@@ -45,11 +45,16 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+            - name: management
+              containerPort: {{ .Values.service.managementPort }}
+              protocol: TCP
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ .Values.spring.profile | quote }}
             - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED
               value: "true"
+            - name: MANAGEMENT_SERVER_PORT
+              value: {{ .Values.service.managementPort | quote }}
             {{- if not .Values.apiKeys.useExistingSecret }}
             - name: AVWX_API_KEY
               valueFrom:

@@ -41,6 +41,7 @@ securityContext:
 service:
   type: ClusterIP
   port: 8080
+  managementPort: 8081
 
 gateway:
   httpRoute:
@@ -85,15 +86,15 @@ resources:
 livenessProbe:
   httpGet:
     path: /actuator/health/liveness
-    port: http
+    port: management
 readinessProbe:
   httpGet:
     path: /actuator/health/readiness
-    port: http
+    port: management
 startupProbe:
   httpGet:
     path: /actuator/health/liveness
-    port: http
+    port: management
   periodSeconds: 5
   failureThreshold: 30
 
