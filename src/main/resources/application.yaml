@@ -21,13 +21,15 @@ spring:
     hibernate.ddl-auto: validate
 
 management:
+  server:
+    port: 8081
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "health,info,prometheus"
   endpoint:
     health:
-      show-details: always
+      show-details: when_authorized
   health:
     circuitbreakers:
       enabled: true
